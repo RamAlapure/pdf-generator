@@ -2,6 +2,7 @@ package com.github.pdfgenerator.service.impl;
 
 import com.github.pdfgenerator.model.User;
 import com.github.pdfgenerator.service.PdfService;
+import com.github.pdfgenerator.util.HeaderFooterPdfPageEventHelper;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -25,8 +26,9 @@ public class PdfServiceImpl implements PdfService {
 
         try (Document document = new Document(PageSize.A4)) {
             // define paper size
-            PdfWriter.getInstance(document, response.getOutputStream());
-
+            PdfWriter pdfWriter = PdfWriter.getInstance(document, response.getOutputStream());
+            HeaderFooterPdfPageEventHelper pageEventHelper = new HeaderFooterPdfPageEventHelper();
+            pdfWriter.setPageEvent(pageEventHelper);
             // start document
             document.open();
 
@@ -44,22 +46,22 @@ public class PdfServiceImpl implements PdfService {
 
             // table header
             String[] headers = new String[]{"No", "username", "Roles", "Permission", "Active", "Bloked", "Created By", "Created Date", "Update By", "Update Date"};
-            PdfPTable tableHeader = new PdfPTable(10);
-            writeTableHeaderPdf(tableHeader, headers);
-            document.add(tableHeader);
+            PdfPTable table = new PdfPTable(10);
+            table.setHeaderRows(1);
+            writeTableHeaderPdf(table, headers);
+            document.add(table);
 
-            // table content
-            PdfPTable tableData = new PdfPTable(10);
-            writeTableData(tableData);
-            document.add(tableData);
+            writeTableData(table);
+            document.add(table);
+
+            HeaderFooter footer = new HeaderFooter(new Phrase(String.valueOf(document.getPageNumber()), getFontContent()), true);
+            document.add(footer);
         }
     }
 
     public void writeTableData(PdfPTable table) {
         List<User> list = getUserList();
 
-        // for auto wide by paper  size
-        table.setWidthPercentage(100);
         // cell
         PdfPCell cell = new PdfPCell();
         int number = 0;
@@ -102,13 +104,34 @@ public class PdfServiceImpl implements PdfService {
     public List<User> getUserList() {
         List<User> list = new ArrayList<>();
         list.add(User.builder().id(1L).username("admin").password("*****").roles("ADMIN,USER").permissions("READ,WRITE").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
-
         list.add(User.builder().id(2L).username("user").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
-
         list.add(User.builder().id(3L).username("ram").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
-
         list.add(User.builder().id(4L).username("anvi").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
-
+        list.add(User.builder().id(5L).username("manager").password("*****").roles("MANAGER").permissions("READ,WRITE,DROP").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(1L).username("admin").password("*****").roles("ADMIN,USER").permissions("READ,WRITE").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(2L).username("user").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(3L).username("ram").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(4L).username("anvi").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(5L).username("manager").password("*****").roles("MANAGER").permissions("READ,WRITE,DROP").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(1L).username("admin").password("*****").roles("ADMIN,USER").permissions("READ,WRITE").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(2L).username("user").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(3L).username("ram").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(4L).username("anvi").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(5L).username("manager").password("*****").roles("MANAGER").permissions("READ,WRITE,DROP").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(1L).username("admin").password("*****").roles("ADMIN,USER").permissions("READ,WRITE").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(2L).username("user").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(3L).username("ram").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(4L).username("anvi").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(5L).username("manager").password("*****").roles("MANAGER").permissions("READ,WRITE,DROP").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(1L).username("admin").password("*****").roles("ADMIN,USER").permissions("READ,WRITE").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(2L).username("user").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(3L).username("ram").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(4L).username("anvi").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(5L).username("manager").password("*****").roles("MANAGER").permissions("READ,WRITE,DROP").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(1L).username("admin").password("*****").roles("ADMIN,USER").permissions("READ,WRITE").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(2L).username("user").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(3L).username("ram").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
+        list.add(User.builder().id(4L).username("anvi").password("*****").roles("USER").permissions("READ").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
         list.add(User.builder().id(5L).username("manager").password("*****").roles("MANAGER").permissions("READ,WRITE,DROP").active(1).blocked(0).createdDate(new Date()).createdBy("admin").updatedDate(new Date()).updatedBy("admin").build());
         return list;
     }

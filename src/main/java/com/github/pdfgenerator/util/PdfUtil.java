@@ -4,8 +4,6 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 
-import java.util.Arrays;
-
 import static com.lowagie.text.Element.ALIGN_LEFT;
 
 public class PdfUtil {
@@ -30,20 +28,20 @@ public class PdfUtil {
     }
 
     public static Font getFontTitle() {
-        Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-        font.setSize(18);
-        return font;
+        return font(FontFactory.HELVETICA_BOLD, 18);
     }
 
     public static Font getFontSubtitle() {
-        Font font = FontFactory.getFont(FontFactory.HELVETICA);
-        font.setSize(12);
-        return font;
+        return font(FontFactory.HELVETICA, 12);
     }
 
     public static Font getFontContent() {
-        Font font = FontFactory.getFont(FontFactory.HELVETICA);
-        font.setSize(10);
+        return font(FontFactory.HELVETICA, 10);
+    }
+
+    public static Font font(String helvetica, int size) {
+        Font font = FontFactory.getFont(helvetica);
+        font.setSize(size);
         return font;
     }
 
