@@ -49,8 +49,9 @@ public class PdfServiceImpl implements PdfService {
             PdfPTable table = new PdfPTable(10);
             table.setHeaderRows(1);
             writeTableHeaderPdf(table, headers);
-            document.add(table);
-
+            // Defines the relative width of the columns
+            float[] columnWidths = new float[]{10f, 25f, 30f, 30f, 20f, 25f, 20f, 30f, 20f, 30f};
+            table.setWidths(columnWidths);
             writeTableData(table);
             document.add(table);
         }
