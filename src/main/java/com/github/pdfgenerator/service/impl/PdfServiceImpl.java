@@ -33,16 +33,16 @@ public class PdfServiceImpl implements PdfService {
             document.open();
 
             // title
-            Paragraph title = new Paragraph("Report User", getFontTitle());
+            Paragraph title = new Paragraph("Report User", FONT_TITLE);
             title.setAlignment(ALIGN_CENTER);
             document.add(title);
 
             // subtitel
-            Paragraph subtitel = new Paragraph("Report Date : 09/12/2022", getFontSubtitle());
+            Paragraph subtitel = new Paragraph("Report Date : 09/12/2022", FONT_SUBTITLE);
             subtitel.setAlignment(ALIGN_LEFT);
             document.add(subtitel);
 
-            enterSpace(document);
+            space(document);
 
             // table header
             String[] headers = new String[]{"No", "username", "Roles", "Permission", "Active", "Bloked", "Created By", "Created Date", "Update By", "Update Date"};
@@ -53,9 +53,6 @@ public class PdfServiceImpl implements PdfService {
 
             writeTableData(table);
             document.add(table);
-
-            HeaderFooter footer = new HeaderFooter(new Phrase(String.valueOf(document.getPageNumber()), getFontContent()), true);
-            document.add(footer);
         }
     }
 
@@ -67,36 +64,36 @@ public class PdfServiceImpl implements PdfService {
         int number = 0;
         for (User item : list) {
             number += 1;
-            cell.setPhrase(new Phrase(String.valueOf(number), getFontContent()));
+            cell.setPhrase(new Phrase(String.valueOf(number), FONT_CONTENT));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(item.getUsername(), getFontContent()));
+            cell.setPhrase(new Phrase(item.getUsername(), FONT_CONTENT));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(item.getRoles(), getFontContent()));
+            cell.setPhrase(new Phrase(item.getRoles(), FONT_CONTENT));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(item.getPermissions(), getFontContent()));
+            cell.setPhrase(new Phrase(item.getPermissions(), FONT_CONTENT));
             table.addCell(cell);
 
             String active = item.getActive() == 1 ? "Active" : "Non Active";
-            cell.setPhrase(new Phrase(active, getFontContent()));
+            cell.setPhrase(new Phrase(active, FONT_CONTENT));
             table.addCell(cell);
 
             String blocked = item.getBlocked() == 1 ? "Blocked" : "Non Blocked";
-            cell.setPhrase(new Phrase(blocked, getFontContent()));
+            cell.setPhrase(new Phrase(blocked, FONT_CONTENT));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(item.getCreatedBy(), getFontContent()));
+            cell.setPhrase(new Phrase(item.getCreatedBy(), FONT_CONTENT));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(item.getCreatedDate().toString(), getFontContent()));
+            cell.setPhrase(new Phrase(item.getCreatedDate().toString(), FONT_CONTENT));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(item.getUpdatedBy(), getFontContent()));
+            cell.setPhrase(new Phrase(item.getUpdatedBy(), FONT_CONTENT));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(item.getUpdatedDate().toString(), getFontContent()));
+            cell.setPhrase(new Phrase(item.getUpdatedDate().toString(), FONT_CONTENT));
             table.addCell(cell);
         }
     }

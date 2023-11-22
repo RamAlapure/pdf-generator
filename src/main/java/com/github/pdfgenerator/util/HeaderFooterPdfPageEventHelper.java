@@ -3,24 +3,14 @@ package com.github.pdfgenerator.util;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 
+import static com.github.pdfgenerator.util.PdfUtil.FONT_FOOTER;
+
 public class HeaderFooterPdfPageEventHelper extends PdfPageEventHelper {
 
     /**
      * The template with the total number of pages.
      */
-    PdfTemplate total;
-
-    private Font normal;
-    private Font normalSmall;
-
-    public HeaderFooterPdfPageEventHelper() {
-        try {
-            this.normal = PdfUtil.font(FontFactory.HELVETICA, 8);
-            this.normalSmall = PdfUtil.font(FontFactory.HELVETICA, 6);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    private PdfTemplate total;
 
     /**
      * Creates the PdfTemplate that will hold the total number of pages.
@@ -31,7 +21,7 @@ public class HeaderFooterPdfPageEventHelper extends PdfPageEventHelper {
     }
 
     /**
-     * Adds a header to every page
+     * Adds a footer to every page
      */
     @Override
     public void onEndPage(PdfWriter writer, Document document) {
@@ -44,14 +34,14 @@ public class HeaderFooterPdfPageEventHelper extends PdfPageEventHelper {
             cell.setBorder(0);
             cell.setBorderWidthTop(1);
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            cell.setPhrase(new Phrase("some text", normalSmall));
+            cell.setPhrase(new Phrase("some text", FONT_FOOTER));
             table.addCell(cell);
 
             cell = new PdfPCell();
             cell.setBorder(0);
             cell.setBorderWidthTop(1);
             cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            cell.setPhrase(new Phrase(String.format("Page %d of", writer.getPageNumber()), normal));
+            cell.setPhrase(new Phrase(String.format("Page %d of", writer.getPageNumber()), FONT_FOOTER));
             table.addCell(cell);
 
             cell = new PdfPCell(Image.getInstance(total));
@@ -68,12 +58,12 @@ public class HeaderFooterPdfPageEventHelper extends PdfPageEventHelper {
     }
 
     /**
-     * Fills out the total number of pages before the document is closed.
+     * Fills out the total number of pages in footer before the document is closed.
      */
     @Override
     public void onCloseDocument(PdfWriter writer, Document document) {
         ColumnText.showTextAligned(total, Element.ALIGN_LEFT,
-                new Phrase(String.valueOf(writer.getPageNumber() - 1), normal), 2, 2, 0);
+                new Phrase(String.valueOf(writer.getPageNumber() - 1), FONT_FOOTER), 2, 2, 0);
     }
 
 }
