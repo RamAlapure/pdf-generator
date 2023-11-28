@@ -24,7 +24,7 @@ public class PdfServiceImpl implements PdfService {
     @Override
     public void getDocument(HttpServletResponse response) throws IOException {
 
-        try (Document document = new Document(PageSize.A4)) {
+        try (Document document = new Document()) {
             // define paper size
             PdfWriter pdfWriter = PdfWriter.getInstance(document, response.getOutputStream());
             HeaderFooterPdfPageEventHelper pageEventHelper = new HeaderFooterPdfPageEventHelper();
@@ -33,14 +33,10 @@ public class PdfServiceImpl implements PdfService {
             document.open();
 
             // title
-            Paragraph title = new Paragraph("Report User", FONT_TITLE);
-            title.setAlignment(ALIGN_CENTER);
-            document.add(title);
+            paragraph("Report User", FONT_TITLE, ALIGN_CENTER, document);
 
             // subtitel
-            Paragraph subtitel = new Paragraph("Report Date : 09/12/2022", FONT_SUBTITLE);
-            subtitel.setAlignment(ALIGN_LEFT);
-            document.add(subtitel);
+            paragraph("Report Date : 09/12/2022", FONT_SUBTITLE, ALIGN_LEFT, document);
 
             space(document);
 
@@ -57,7 +53,7 @@ public class PdfServiceImpl implements PdfService {
         }
     }
 
-    public void writeTableData(PdfPTable table) {
+    private void writeTableData(PdfPTable table) {
         List<User> list = getUserList();
 
         // cell

@@ -44,4 +44,9 @@ public class PdfUtil {
         document.add(space);
     }
 
+    public static void paragraph(String string, Font font, int alignment, Document document) {
+        Paragraph paragraph = new Paragraph(string, font);
+        paragraph.setAlignment(alignment);
+        document.add(paragraph);
+    }
 }
